@@ -1,13 +1,8 @@
 import { permissionManager } from "./permissions.js";
+import { windowState } from "./window-state.js";
 import { OverlayWindow, ScreenshotResult } from "./types.js";
 import * as fs from "fs";
 import * as path from "path";
-
-let windowState: Map<string, OverlayWindow> = new Map();
-
-export function setWindowState(ws: Map<string, OverlayWindow>) {
-  windowState = ws;
-}
 
 export interface ToolContext {
   agentId: string;
