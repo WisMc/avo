@@ -68,22 +68,30 @@ export class AVOServer {
         });
         break;
         
-      case "request_state":
-        ws.send(JSON.stringify({
-          type: "state",
-          windows: windowState.getAll()
-        }));
-        break;
-        
-      case "subscribe":
-        if (msg.windowId && msg.agentId) {
-          windowState.addSubscriber(msg.windowId, msg.agentId);
+      case "request_state": {
+        const ws = this.clients.get(clientId);
+        if (ws) {
           ws.send(JSON.stringify({
-            type: "subscribed",
-            windowId: msg.windowId
+            type: "state",
+            windows: windowState.getAll()
           }));
         }
         break;
+      }
+        
+      case "subscribe": {
+        if (msg.windowId && msg.agentId) {
+          windowState.addSubscriber(msg.windowId, msg.agentId);
+          const ws = this.clients.get(clientId);
+          if (ws) {
+            ws.send(JSON.stringify({
+              type: "subscribed",
+              windowId: msg.windowId
+            }));
+          }
+        }
+        break;
+      }
         
       case "unsubscribe":
         if (msg.windowId && msg.agentId) {
