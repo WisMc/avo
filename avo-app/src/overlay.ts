@@ -1,6 +1,7 @@
 import { windowStore, WindowState } from "./window-manager.js";
 
 let wsClient: WebSocket | null = null;
+const windowSubscriptions: Map<string, () => void> = new Map();
 
 export function setWsClient(ws: WebSocket) {
   wsClient = ws;
@@ -20,12 +21,21 @@ export async function createOverlayWindow(state: WindowState, parent: HTMLElemen
   
   const header = document.createElement("div");
   header.className = "header";
-  header.innerHTML = `
-    <span id="window-id">${state.name}</span>
-    <div id="controls">
-      <button id="btn-close">×</button>
-    </div>
-  `;
+  
+  const titleSpan = document.createElement("span");
+  titleSpan.id = "window-id";
+  titleSpan.textContent = state.name;
+  
+  const controls = document.createElement("div");
+  controls.id = "controls";
+  
+  const closeBtn = document.createElement("button");
+  closeBtn.id = "btn-close";
+  closeBtn.textContent = "×";
+  controls.appendChild(closeBtn);
+  
+  header.appendChild(titleSpan);
+  header.appendChild(controls);
   container.appendChild(header);
   
   const content = document.createElement("div");
@@ -41,9 +51,9 @@ export async function createOverlayWindow(state: WindowState, parent: HTMLElemen
   
   setupDrag(container, header, state.id);
   setupResize(container, state.id);
-  setupCloseButton(container, state.id);
+  setupCloseButton(closeBtn, state.id);
   
-  windowStore.subscribe(() => {
+  const unsubscribe = windowStore.subscribe(() => {
     const updated = windowStore.get(state.id);
     if (updated) {
       if (updated.isAIViewing) {
@@ -57,6 +67,8 @@ export async function createOverlayWindow(state: WindowState, parent: HTMLElemen
       }
     }
   });
+  
+  windowSubscriptions.set(state.id, unsubscribe);
   
   return container;
 }
@@ -139,11 +151,16 @@ function setupResize(container: HTMLElement, windowId: string) {
   });
 }
 
-function setupCloseButton(container: HTMLElement, windowId: string) {
-  const btn = container.querySelector("#btn-close");
-  btn?.addEventListener("click", () => {
+function setupCloseButton(btn: HTMLButtonElement, windowId: string) {
+  btn.addEventListener("click", () => {
+    const unsubscribe = windowSubscriptions.get(windowId);
+    if (unsubscribe) {
+      unsubscribe();
+      windowSubscriptions.delete(windowId);
+    }
     windowStore.delete(windowId);
-    container.remove();
+    const container = document.getElementById(`overlay-${windowId}`);
+    container?.remove();
     broadcastWindowUpdate(windowId);
   });
 }

@@ -79,15 +79,25 @@ function renderInfo(container: HTMLElement, info: Record<string, string>) {
   for (const [key, value] of Object.entries(info)) {
     const row = document.createElement("div");
     row.className = "info-row";
-    row.innerHTML = `
-      <span class="info-key">${key}:</span>
-      <span class="info-value">${value}</span>
-    `;
+    
+    const keySpan = document.createElement("span");
+    keySpan.className = "info-key";
+    keySpan.textContent = key + ":";
+    
+    const valueSpan = document.createElement("span");
+    valueSpan.className = "info-value";
+    valueSpan.textContent = value;
+    
+    row.appendChild(keySpan);
+    row.appendChild(valueSpan);
     container.appendChild(row);
   }
   
   if (Object.keys(info).length === 0) {
-    container.innerHTML = '<span class="info-empty">No data</span>';
+    const empty = document.createElement("span");
+    empty.className = "info-empty";
+    empty.textContent = "No data";
+    container.appendChild(empty);
   }
 }
 

@@ -78,6 +78,10 @@ export async function avoMoveWindow(args: { window_id: string; x: number; y: num
     throw new Error("ACCESS_DENIED");
   }
   
+  if (!Number.isFinite(x) || x < 0 || !Number.isFinite(y) || y < 0) {
+    throw new Error("INVALID_COORDINATES: x and y must be non-negative numbers");
+  }
+  
   const win = windowState.get(window_id);
   if (!win) throw new Error("WINDOW_NOT_FOUND");
   
@@ -92,6 +96,10 @@ export async function avoResizeWindow(args: { window_id: string; width: number; 
   
   if (!permissionManager.hasAccess(window_id, ctx.agentId)) {
     throw new Error("ACCESS_DENIED");
+  }
+  
+  if (!Number.isFinite(width) || width < 50 || !Number.isFinite(height) || height < 50) {
+    throw new Error("INVALID_DIMENSIONS: width and height must be numbers >= 50");
   }
   
   const win = windowState.get(window_id);

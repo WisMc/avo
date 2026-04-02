@@ -138,7 +138,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
-  const ctx = { agentId: "claude" };
+  const agentId = process.env.AVO_AGENT_ID || "anonymous";
+  const ctx = { agentId };
   
   try {
     switch (name) {
