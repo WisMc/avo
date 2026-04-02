@@ -4,11 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "tauri dev",
-    "build": "tauri build"
+    "build": "tauri build",
+    "test": "vitest"
   },
-  "dependencies": {},
   "devDependencies": {
     "@tauri-apps/cli": "^2.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.2"
   }
 }
