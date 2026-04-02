@@ -58,6 +58,25 @@ Set `AVO_AGENT_ID` environment variable:
 AVO_AGENT_ID=my-agent node dist/index.js
 ```
 
+If not set, a unique ID is auto-generated.
+
+## Multi-Instance Usage
+
+Each AI agent instance should have a unique `AVO_AGENT_ID`:
+
+```bash
+# Terminal 1: OpenCode with agent "user1-session1"
+AVO_AGENT_ID=user1-session1 node dist/index.js
+
+# Terminal 2: OpenCode with agent "user2-session2"  
+AVO_AGENT_ID=user2-session2 node dist/index.js
+```
+
+**Permission model:**
+- Windows can be assigned to multiple agents (shared view)
+- Each agent sees only windows it has permission to
+- Permissions are managed via `avo_update_metadata` with `subscribers`
+
 ## MCP Tools
 
 | Tool | Description |

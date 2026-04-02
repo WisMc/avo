@@ -143,7 +143,7 @@ mcpServer.setRequestHandler(ListToolsRequestSchema, async () => {
 
 mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
-  const agentId = process.env.AVO_AGENT_ID || "anonymous";
+  const agentId = process.env.AVO_AGENT_ID || `agent_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const ctx = { agentId };
 
   try {
@@ -299,7 +299,10 @@ class UnifiedServer {
 
 const unifiedServer = new UnifiedServer();
 
+const AGENT_ID = process.env.AVO_AGENT_ID || `agent_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
 async function main() {
+  console.error(`AVO MCP Server starting with agentId: ${AGENT_ID}`);
   unifiedServer.startWs();
   const transport = new StdioServerTransport();
   await mcpServer.connect(transport);
