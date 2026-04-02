@@ -1,0 +1,51 @@
+.overlay {
+  background: rgba(20, 20, 30, 0.85);
+  border: 2px solid rgba(100, 200, 255, 0.6);
+  border-radius: 8px;
+  box-shadow: 
+    0 0 20px rgba(100, 200, 255, 0.3),
+    0 0 40px rgba(100, 200, 255, 0.1),
+    inset 0 0 20px rgba(100, 200, 255, 0.05);
+  overflow: hidden;
+  user-select: none;
+}
+
+.header {
+  background: rgba(40, 40, 60, 0.9);
+  padding: 4px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+}
+
+.ai-indicator {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(100, 255, 150, 0.8);
+  color: black;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.ai-indicator.visible {
+  display: block;
+}
+
+.ai-indicator.hidden {
+  display: none;
+}
+
+#metadata-locked,
+#metadata-dynamic {
+  padding: 4px 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#metadata-locked {
+  background: rgba(60, 60, 80, 0.5);
+  border-bottom: 1px solid rgba(100, 200, 255, 0.3);
+}
