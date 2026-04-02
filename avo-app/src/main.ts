@@ -1,5 +1,12 @@
 import { Window } from "@tauri-apps/api/window";
 
+export interface WindowConfig {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export async function createOverlayWindow(id: string, config: WindowConfig) {
   const window = await Window.create(`overlay_${id}`, {
     url: "index.html",
