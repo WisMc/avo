@@ -1,4 +1,6 @@
 import { Window } from "@tauri-apps/api/window";
+import { windowStore } from "./window-manager.js";
+import { createOverlayWindow } from "./overlay.js";
 
 export interface WindowConfig {
   x: number;
@@ -7,7 +9,7 @@ export interface WindowConfig {
   height: number;
 }
 
-export async function createOverlayWindow(id: string, config: WindowConfig) {
+export async function createTauriWindow(id: string, config: WindowConfig) {
   const window = await Window.create(`overlay_${id}`, {
     url: "index.html",
     title: `AVO Window ${id}`,
@@ -23,3 +25,15 @@ export async function createOverlayWindow(id: string, config: WindowConfig) {
   });
   return window;
 }
+
+async function init() {
+  const state = windowStore.create(
+    "test1",
+    "Terminal",
+    { x: 100, y: 100, width: 400, height: 300 },
+    0
+  );
+  await createOverlayWindow(state, document.body);
+}
+
+init();
