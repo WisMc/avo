@@ -4,8 +4,7 @@
   "version": "1.0.0",
   "identifier": "com.avo.app",
   "build": {
-    "devUrl": "http://localhost:1420",
-    "beforeDevCommand": "cd ../.. && npx serve -l 1420"
+    "frontendDist": "../dist"
   },
   "app": {
     "withGlobalTauri": true,
@@ -20,6 +19,18 @@
     ],
     "security": {
       "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "msi"],
+    "icon": [
+      "icons/icon.png"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     }
   }
 }
